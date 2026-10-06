@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>api-tree — When to Use &amp; The Philosophy</title>
+  <title>api-tree — The Situation &amp; Solution</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -30,39 +30,60 @@
       <h1>api-tree</h1>
       <div class="lead">A small, zero-dependency runtime API-tree builder.</div>
 
-      <div class="callout">
-        <p><strong>When should you use this?</strong></p>
-        <p><code>api-tree</code> is built specifically for systems where <strong>most of the execution logic is identical</strong> and handled by a <strong>single core function</strong>, while only a few parameters vary from endpoint to endpoint.</p>
-      </div>
+      <p>We had a situation in our codebase: we were writing function after function just to expose different endpoints.</p>
 
-      <h2>The Anti-Pattern: Boilerplate Repetition</h2>
-      <p>Consider an SDK or API client with 20, 50, or 200 endpoints. In most codebases, <strong>95% of the work is identical across all of them</strong>:</p>
+      <p>Yet under the hood, every single one of those functions was doing the exact same thing: calling one core execution function. The only difference from endpoint to endpoint was a few variables—like a resource name, an action, or a query string.</p>
+
+      <p>Writing dozens of nearly identical wrapper functions created boilerplate, duplicated code, and made maintenance tedious.</p>
+
+      <h2>What We Did</h2>
+
+      <p>We separated the parts that never change from the parts that do:</p>
+
       <ul>
-        <li>Sending an HTTP POST or XML payload</li>
-        <li>Setting headers and managing network timeouts</li>
-        <li>Parsing envelopes and extracting data</li>
+        <li><strong>The Single Function (Executor)</strong>: The core execution engine is written exactly once. It handles the network requests, headers, and response parsing.</li>
+        <li><strong>The Variables (source.json)</strong>: The parameters that vary per endpoint are moved into a clean JSON contract.</li>
+        <li><strong>The Routes (api.json)</strong>: The allowed endpoints are defined in a flat array of dot-notation paths.</li>
       </ul>
-      <p>The only thing that actually changes between <code>app.masters.unit.all()</code> and <code>app.company.fetch()</code> are a few variables: a resource name, a TDL query string, or a URL parameter.</p>
-      <p>Yet without <code>api-tree</code>, developers write dozens or hundreds of repetitive, hand-crafted wrapper functions just to call the exact same underlying function with different arguments.</p>
 
-      <h2>The api-tree Pattern: 1 Engine + Variable JSON</h2>
-      <p>Instead of writing endless boilerplate wrappers, you separate concerns into three clean parts:</p>
-      <ol>
-        <li><strong>One Single Executor</strong>: You write your execution muscle exactly once. It knows how to send the request and handle responses.</li>
-        <li><strong>Variable Data in JSON (<code>source.json</code>)</strong>: You define only the things that change (TDL queries, actions, resources, URLs) in a declarative schema.</li>
-        <li><strong>The Navigation List (<code>api.json</code>)</strong>: You list the allowed routes in a flat, readable array.</li>
-      </ol>
+      <p><strong>api-tree</strong> marries the single executor function with the variable JSON, dynamically building the callable dot-notation tree at runtime.</p>
 
-      <div class="diagram">source JSON (Variables)  +  API paths (Routes)  +  executor (Single Function)
-                                      ↓
-                                   api-tree
-                                      ↓
-                            Callable Runtime Tree
-                          app.masters.unit.all()</div>
+      <h2>The Code</h2>
 
-      <h2>Why This Matters</h2>
-      <p>When a new endpoint is needed, you don't write new JavaScript wrapper functions, manage imports, or test routing logic. You simply add one entry to your JSON file.</p>
-      <p><code>api-tree</code> binds your single executor to that new definition and instantly exposes it on the callable tree with zero code churn.</p>
+      <p>Instead of writing endless wrapper functions like this:</p>
+
+<pre><code>// The repetitive pattern
+export const getUnits = () => execute({ resource: "Unit" });
+export const getLedgers = () => execute({ resource: "Ledger" });
+export const getCompany = () => execute({ resource: "Company" });</code></pre>
+
+      <p>You write your executor once, put your variables in JSON, and let <code>api-tree</code> generate the surface:</p>
+
+<pre><code>import apiTree from "@keshavsoft/api-tree";
+
+// 1. Only the variables
+const source = {
+    app: {
+        masters: {
+            unit: { all: { resource: "Unit", action: "fetch" } }
+        }
+    }
+};
+
+const apiPaths = ["app.masters.unit.all"];
+
+// 2. The single executor function
+const execute = async ({ inLeafSpec, inParam }) => {
+    return await dispatch(inLeafSpec.resource, inParam);
+};
+
+// 3. Build the callable tree
+const app = apiTree(source, apiPaths, execute);
+
+// 4. Call naturally
+const units = await app.masters.unit.all();</code></pre>
+
+      <p>When you need a new endpoint tomorrow, you do not write a new JavaScript function. You simply add a new entry to your JSON file, and it is immediately available on the tree.</p>
 
       <div class="page-nav">
         <span></span>

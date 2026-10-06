@@ -1,0 +1,22 @@
+[
+  "tally.company.fetch",
+  "tally.vouchers.purchases.fetch",
+  "tally.vouchers.sales.fetch",
+  "tally.masters.unit.all",
+  "tally.masters.units.fetch",
+  "tally.masters.units.all",
+  "tally.masters.stockItem.all",
+  "tally.masters.stockItem.withBaseUnits",
+  "tally.masters.stockItem.withBatches",
+  "tally.masters.stockItems.withBatches",
+  "tally.masters.ledger.all",
+  "tally.masters.ledger.withDetails",
+  "tally.masters.ledger.withGstDetails",
+  "tally.masters.ledgers.withGstDetails",
+  "tally.masters.stockGroup.all",
+  "tally.masters.stockGroup.withParent",
+  "tally.masters.stockGroups.withParent",
+  "tally.masters.godown.all",
+  "tally.masters.godown.withParent",
+  "tally.reports.stockSummary.fetch"
+]

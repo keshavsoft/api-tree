@@ -1,6 +1,6 @@
 {
   "name": "@keshavsoft/api-tree",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Build a callable runtime API tree from API paths, source JSON, and an external executor.",
   "type": "module",
   "exports": {
@@ -20,7 +20,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node --test test/test.js test/test-v2.js",
+    "test": "node --test test/unit.test.js test/tally-real-world.test.js",
     "prepublishOnly": "npm test"
   },
   "repository": {

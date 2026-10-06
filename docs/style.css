@@ -204,32 +204,6 @@ pre code {
   color: inherit;
 }
 
-.diagram {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 24px;
-  margin: 28px 0;
-  text-align: center;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.96rem;
-  color: var(--accent);
-  line-height: 1.8;
-  white-space: pre;
-}
-
-.callout {
-  border-left: 3px solid var(--callout-border);
-  background: var(--card-bg);
-  padding: 16px 20px;
-  margin: 24px 0;
-  border-radius: 0 6px 6px 0;
-  color: #c9d1d9;
-}
-
-.callout p:last-child {
-  margin-bottom: 0;
-}
 
 table {
   width: 100%;
