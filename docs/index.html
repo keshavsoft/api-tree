@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>api-tree</title>
+<style>body{max-width:850px;margin:50px auto;padding:0 20px;font:16px/1.6 system-ui,sans-serif}code,pre{background:#f3f3f3;padding:3px 6px;border-radius:4px}pre{padding:16px;overflow:auto}h1{margin-bottom:4px}.muted{color:#666}</style>
+</head>
+<body>
+<h1>api-tree</h1>
+<p class="muted">A small runtime API-tree builder.</p>
+<h2>The story</h2>
+<p>A domain repository already knows its structure and its execution logic. api-tree does not replace that logic. It only turns a flat list of API paths into a callable runtime tree.</p>
+<pre>source JSON + API paths + executor
+                 ↓
+              api-tree
+                 ↓
+       app.users.profile.fetch()</pre>
+<h2>Three inputs</h2>
+<ul><li><b>source</b> — source/domain JSON</li><li><b>apiPaths</b> — flat array of dotted paths</li><li><b>executor</b> — external function that performs the operation</li></ul>
+<h2>Why separate it?</h2>
+<p>The route mechanism is reusable. Tally XML, Tally JSON, Tally Simple, or another domain can keep its own JSON and execution code while sharing the same runtime API-tree mechanism.</p>
+<h2>Validation</h2>
+<p>The public function rejects invalid source, API-path arrays, and executors with clear TypeErrors.</p>
+</body>
+</html>

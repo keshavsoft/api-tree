@@ -1,0 +1,6 @@
+[
+  "app.users.profile.fetch",
+  "app.users.settings.fetch",
+  "app.reports.summary.fetch",
+  "app.reports.metrics.fetch"
+]

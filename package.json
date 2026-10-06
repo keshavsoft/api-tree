@@ -1,0 +1,36 @@
+{
+  "name": "api-tree",
+  "version": "1.0.0",
+  "description": "Build a callable runtime API tree from API paths, source JSON, and an external executor.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "files": [
+    "src",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/test.js"
+  },
+  "keywords": [
+    "api-tree",
+    "json-driven",
+    "runtime-api",
+    "api-paths",
+    "declarative-api"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.10"
+  }
+}

@@ -1,0 +1,36 @@
+{
+    "app": {
+        "users": {
+            "profile": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "users",
+                    "description": "Fetches user profile details by ID."
+                }
+            },
+            "settings": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "user_settings",
+                    "description": "Fetches user configuration settings by ID."
+                }
+            }
+        },
+        "reports": {
+            "summary": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "daily_summary",
+                    "description": "Fetches aggregate business summary by date."
+                }
+            },
+            "metrics": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "system_metrics",
+                    "description": "Fetches performance metrics by date."
+                }
+            }
+        }
+    }
+}
