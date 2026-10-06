@@ -31,6 +31,36 @@ test("builds a callable API tree", async () => {
     });
 });
 
+test("supports multi-argument leaves", async () => {
+    const api = apiTree(source, paths, async ({ inRoutePath, inParam, inArgs }) => ({
+        inRoutePath,
+        inParam,
+        inArgs
+    }));
+
+    const result = await api.users.profile.fetch("123", "extra1", "extra2");
+    assert.deepEqual(result, {
+        inRoutePath: "app.users.profile.fetch",
+        inParam: "123",
+        inArgs: ["extra1", "extra2"]
+    });
+});
+
+test("supports named-object signature", async () => {
+    const api = apiTree({
+        inSource: source,
+        inApiPaths: paths,
+        inExecutor: async ({ inRoutePath, inParam }) => ({ inRoutePath, inParam })
+    });
+
+    assert.equal(typeof api.users.profile.fetch, "function");
+    const result = await api.users.profile.fetch("abc");
+    assert.deepEqual(result, {
+        inRoutePath: "app.users.profile.fetch",
+        inParam: "abc"
+    });
+});
+
 test("rejects a non-object source", () => {
     assert.throws(() => apiTree([], paths, () => {}), /source must be a JSON object/);
 });

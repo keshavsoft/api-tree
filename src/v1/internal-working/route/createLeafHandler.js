@@ -3,12 +3,14 @@ const startFunc = ({ inPath, inSource, inExecutor }) => {
     const localSource = inSource;
     const localExecutor = inExecutor;
 
-    return async (inParam) => {
+    return async (inParam, ...inArgs) => {
         const localParam = inParam;
+        const localArgs = inArgs;
 
         return await localExecutor({
             inRoutePath: localPath,
             inParam: localParam,
+            inArgs: localArgs,
             inSource: localSource
         });
     };

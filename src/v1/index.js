@@ -25,12 +25,22 @@ const validate = (inSource, inApiPaths, inExecutor) => {
 };
 
 const start = (inSource, inApiPaths, inExecutor) => {
-    validate(inSource, inApiPaths, inExecutor);
+    let source = inSource;
+    let paths = inApiPaths;
+    let executor = inExecutor;
+
+    if (inSource && typeof inSource === "object" && "inSource" in inSource) {
+        source = inSource.inSource;
+        paths = inSource.inApiPaths;
+        executor = inSource.inExecutor;
+    }
+
+    validate(source, paths, executor);
 
     return routeStart({
-        inApiPaths,
-        inSource,
-        inExecutor
+        inApiPaths: paths,
+        inSource: source,
+        inExecutor: executor
     });
 };
 

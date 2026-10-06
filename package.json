@@ -20,7 +20,15 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node --test test/test.js"
+    "test": "node --test test/test.js",
+    "prepublishOnly": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keshavsoft/api-tree.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "api-tree",
