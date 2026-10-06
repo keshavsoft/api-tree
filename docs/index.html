@@ -1,26 +1,298 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>api-tree</title>
-<style>body{max-width:850px;margin:50px auto;padding:0 20px;font:16px/1.6 system-ui,sans-serif}code,pre{background:#f3f3f3;padding:3px 6px;border-radius:4px}pre{padding:16px;overflow:auto}h1{margin-bottom:4px}.muted{color:#666}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@keshavsoft/api-tree — Declarative Runtime API Tree Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #3b82f6;
+      --primary-light: #60a5fa;
+      --accent: #10b981;
+      --code-bg: #030712;
+      --border: #374151;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0 1.5rem 4rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 4rem 0 2.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+    }
+    .badge.green { background: #064e3b; color: #34d399; border-color: #059669; }
+    .badge.blue { background: #1e3a8a; color: #93c5fd; border-color: #2563eb; }
+
+    h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 700px;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 2.5rem 0 1rem;
+      color: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.75rem;
+      color: var(--primary-light);
+    }
+
+    p, ul {
+      color: #d1d5db;
+      margin-bottom: 1.25rem;
+    }
+
+    ul { padding-left: 1.5rem; }
+    li { margin-bottom: 0.5rem; }
+
+    .formula-box {
+      background: linear-gradient(180deg, rgba(30, 58, 138, 0.2) 0%, rgba(17, 24, 39, 0.6) 100%);
+      border: 1px solid #2563eb;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #bfdbfe;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      color: #93c5fd;
+    }
+
+    pre code {
+      color: #e2e8f0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .card h4 {
+      color: #60a5fa;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--card-bg);
+      color: #ffffff;
+    }
+
+    td {
+      background: rgba(17, 24, 39, 0.4);
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-<h1>api-tree</h1>
-<p class="muted">A small runtime API-tree builder.</p>
-<h2>The story</h2>
-<p>A domain repository already knows its structure and its execution logic. api-tree does not replace that logic. It only turns a flat list of API paths into a callable runtime tree.</p>
-<pre>source JSON + API paths + executor
-                 ↓
-              api-tree
-                 ↓
-       app.users.profile.fetch()</pre>
-<h2>Three inputs</h2>
-<ul><li><b>source</b> — source/domain JSON</li><li><b>apiPaths</b> — flat array of dotted paths</li><li><b>executor</b> — external function that performs the operation</li></ul>
-<h2>Why separate it?</h2>
-<p>The route mechanism is reusable. Tally XML, Tally JSON, Tally Simple, or another domain can keep its own JSON and execution code while sharing the same runtime API-tree mechanism.</p>
-<h2>Validation</h2>
-<p>The public function rejects invalid source, API-path arrays, and executors with clear TypeErrors.</p>
+  <div class="container">
+    <header>
+      <div class="badge-bar">
+        <span class="badge blue">@keshavsoft/api-tree</span>
+        <span class="badge green">v2.0.0</span>
+        <span class="badge">Zero Dependencies</span>
+        <span class="badge">Node &gt;= 20.10</span>
+      </div>
+      <h1>@keshavsoft/api-tree</h1>
+      <p class="tagline">A declarative, ultra-lean routing engine that turns source schemas, API paths, and an external executor into a callable runtime API tree.</p>
+    </header>
+
+    <div class="formula-box">
+      Runtime Tree = Source Schema (JSON) + API Paths (Routes) + Custom Executor
+    </div>
+
+    <h2>Core Architecture</h2>
+    <p><code>@keshavsoft/api-tree</code> decouples specification contracts from runtime execution:</p>
+    <div class="grid">
+      <div class="card">
+        <h4>1. Source Schema</h4>
+        <p>The single source of truth containing leaf specifications, metadata, and domain contracts.</p>
+      </div>
+      <div class="card">
+        <h4>2. API Paths</h4>
+        <p>A flat, declarative array of dotted routes (e.g. <code>app.users.profile.fetch</code>).</p>
+      </div>
+      <div class="card">
+        <h4>3. Custom Executor</h4>
+        <p>A pure execution handler that receives standardized context and executes the operation.</p>
+      </div>
+    </div>
+
+    <h2>Quick Start</h2>
+    <pre><code>import apiTree from "@keshavsoft/api-tree";
+
+const source = {
+  app: {
+    users: {
+      profile: {
+        fetch: { action: "fetch", resource: "User" }
+      }
+    }
+  }
+};
+
+const apiPaths = ["app.users.profile.fetch"];
+
+const executor = async ({ inRoutePath, inLeafSpec, inParam }) => {
+  return { id: inParam, action: inLeafSpec.action };
+};
+
+const api = apiTree(source, apiPaths, executor);
+
+// Call the navigable tree!
+const result = await api.users.profile.fetch("123");
+console.log(result); // { id: "123", action: "fetch" }</code></pre>
+
+    <h2>Execution Context</h2>
+    <p>When an attached leaf function is invoked, your executor receives a rich context object:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>inRoutePath</code></td>
+          <td>string</td>
+          <td>The full dot-notation route path.</td>
+        </tr>
+        <tr>
+          <td><code>inParam</code></td>
+          <td>any</td>
+          <td>First argument passed to the leaf.</td>
+        </tr>
+        <tr>
+          <td><code>inArgs</code></td>
+          <td>any[]</td>
+          <td>Array of all additional arguments.</td>
+        </tr>
+        <tr>
+          <td><code>inLeafSpec</code></td>
+          <td>object</td>
+          <td>Pre-resolved leaf definition from source.json.</td>
+        </tr>
+        <tr>
+          <td><code>inSource</code></td>
+          <td>object</td>
+          <td>The raw source schema object.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer>
+      <p>MIT License &copy; KeshavSoft. Distributed via npm.</p>
+    </footer>
+  </div>
 </body>
 </html>

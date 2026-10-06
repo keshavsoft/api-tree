@@ -1,0 +1,22 @@
+{
+  "app": {
+    "users": {
+      "profile": {
+        "fetch": {
+          "action": "fetch",
+          "resource": "User",
+          "description": "Fetch user profile details"
+        }
+      }
+    },
+    "reports": {
+      "summary": {
+        "fetch": {
+          "action": "fetch",
+          "resource": "Report",
+          "description": "Fetch summary report"
+        }
+      }
+    }
+  }
+}
