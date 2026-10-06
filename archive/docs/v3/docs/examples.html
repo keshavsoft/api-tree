@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>api-tree — Examples</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">api-tree</a>
+        <div class="brand-subtitle">v2.0.0 &bull; KeshavSoft</div>
+      </div>
+      <div class="nav-label">Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story</a></li>
+        <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+        <li><a href="api.html" class="nav-link">API Reference</a></li>
+        <li><a href="examples.html" class="nav-link active">Examples</a></li>
+        <li><a href="validation.html" class="nav-link">Guarantees</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/api-tree" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Examples</h1>
+      <div class="lead">Practical implementations across different ecosystems.</div>
+
+      <h2>1. Decoupling TallyPrime Runtimes</h2>
+      <p>In the KeshavSoft Tally ecosystem, <code>tally-spec</code> owns the data contracts, <code>@keshavsoft/api-tree</code> builds the navigable tree, and <code>tally-xml-tdl</code> executes raw XML over HTTP:</p>
+      <pre><code>import apiTree from "@keshavsoft/api-tree";
+import { source, apiPaths } from "tally-spec";
+import tallyXmlExecutor from "./engine/execution/index.js";
+
+// Builds callable tree: app.masters.unit.all(), app.company.fetch()
+const app = apiTree(source, apiPaths, tallyXmlExecutor);
+
+// Fetch live units directly from TallyPrime
+const units = await app.masters.unit.all();
+console.log(units);</code></pre>
+
+      <h2>2. Dynamic REST / HTTP Client</h2>
+      <p>Instead of manually writing HTTP client SDKs for every microservice, generate one on the fly from an endpoint schema:</p>
+      <pre><code>import apiTree from "@keshavsoft/api-tree";
+
+const endpoints = {
+    api: {
+        v1: {
+            users: {
+                get: { method: "GET", url: "https://api.example.com/users" }
+            }
+        }
+    }
+};
+
+const apiPaths = ["api.v1.users.get"];
+
+const httpExecutor = async ({ inLeafSpec, inParam }) => {
+    const response = await fetch(`${inLeafSpec.url}/${inParam}`, {
+        method: inLeafSpec.method
+    });
+    return response.json();
+};
+
+const client = apiTree(endpoints, apiPaths, httpExecutor);
+
+// Invokes GET https://api.example.com/users/42
+const user = await client.v1.users.get(42);</code></pre>
+
+      <h2>3. CLI Command Dispatcher</h2>
+      <p>Map command lines directly to business logic handlers using path notation:</p>
+      <pre><code>import apiTree from "@keshavsoft/api-tree";
+
+const commands = {
+    cli: {
+        auth: {
+            login: { description: "Authenticate user session" },
+            logout: { description: "Terminate session" }
+        }
+    }
+};
+
+const cli = apiTree(commands, ["cli.auth.login", "cli.auth.logout"], async ({ inRoutePath, inParam }) => {
+    console.log(`Executing ${inRoutePath} with credentials:`, inParam);
+});
+
+await cli.auth.login({ username: "admin" });</code></pre>
+
+      <div class="page-nav">
+        <a href="api.html">&larr; API Reference</a>
+        <a href="validation.html">Next: Guarantees &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

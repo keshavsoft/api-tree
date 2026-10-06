@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>api-tree — How It Works</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">api-tree</a>
+        <div class="brand-subtitle">v2.0.0 &bull; KeshavSoft</div>
+      </div>
+      <div class="nav-label">Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story</a></li>
+        <li><a href="how-it-works.html" class="nav-link active">How It Works</a></li>
+        <li><a href="api.html" class="nav-link">API Reference</a></li>
+        <li><a href="examples.html" class="nav-link">Examples</a></li>
+        <li><a href="validation.html" class="nav-link">Guarantees</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/api-tree" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>How It Works</h1>
+      <div class="lead">Under the hood of the dynamic runtime routing engine.</div>
+
+      <h2>1. The Assembly Pipeline</h2>
+      <p>When you call <code>apiTree(source, apiPaths, executor)</code>, the engine performs three synchronous steps:</p>
+      <ol>
+        <li><strong>Pre-Flight Validation</strong>: Ensures that <code>source</code> is a valid plain object, <code>apiPaths</code> contains valid non-empty string segments, and <code>executor</code> is a callable function.</li>
+        <li><strong>Tree Branching</strong>: Splits each dotted path into segments (e.g. <code>["app", "users", "profile", "fetch"]</code>) and recursively builds nested JavaScript objects.</li>
+        <li><strong>Leaf Handler Attachment</strong>: The final segment becomes an async callable leaf function wired to your executor.</li>
+      </ol>
+
+      <h2>2. Pre-Resolved Leaf Specifications (<code>inLeafSpec</code>)</h2>
+      <p>In older patterns, executors had to manually traverse <code>inSource</code> to locate their definition. In <code>v2</code>, <code>api-tree</code> automatically resolves the leaf object from <code>source.json</code> during tree construction:</p>
+      <pre><code>const executor = async ({ inRoutePath, inLeafSpec, inParam }) => {
+    // inLeafSpec is already extracted from source:
+    // { action: "fetch", resource: "User", timeout: 5000 }
+    console.log(inLeafSpec.resource);
+};</code></pre>
+
+      <h2>3. Intelligent Root Handling</h2>
+      <p>Depending on your architecture, your API paths may belong to a single domain or multiple domains:</p>
+      <ul>
+        <li><strong>Single-Root Auto-Unwrapping</strong>: When all paths start with the same root (e.g. <code>["app.users.fetch", "app.reports.fetch"]</code>), <code>api-tree</code> automatically unwraps <code>app</code>, giving you clean access like <code>api.users.fetch()</code>.</li>
+        <li><strong>Multi-Root Domain Preservation</strong>: When paths belong to multiple roots (e.g. <code>["users.list", "orders.create"]</code>), <code>api-tree</code> preserves both roots (<code>api.users.list()</code> and <code>api.orders.create()</code>).</li>
+        <li><strong>Explicit Configuration</strong>: You can pass <code>{ inUnwrapRoot: false }</code> to force keeping the root prefix intact.</li>
+      </ul>
+
+      <h2>4. Hybrid Callable Branches</h2>
+      <p>In JavaScript, functions are objects. If your schema defines both a parent route and a child route (such as <code>api.users</code> and <code>api.users.profile</code>), <code>api-tree</code> seamlessly attaches the child branch onto the parent function:</p>
+      <pre><code>await api.users();         // Calls the parent handler
+await api.users.profile(); // Calls the child handler</code></pre>
+
+      <div class="page-nav">
+        <a href="index.html">&larr; The Story</a>
+        <a href="api.html">Next: API Reference &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

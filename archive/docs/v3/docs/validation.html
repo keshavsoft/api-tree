@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>api-tree — Guarantees &amp; Validation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">api-tree</a>
+        <div class="brand-subtitle">v2.0.0 &bull; KeshavSoft</div>
+      </div>
+      <div class="nav-label">Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story</a></li>
+        <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+        <li><a href="api.html" class="nav-link">API Reference</a></li>
+        <li><a href="examples.html" class="nav-link">Examples</a></li>
+        <li><a href="validation.html" class="nav-link active">Guarantees</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/api-tree" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Guarantees &amp; Validation</h1>
+      <div class="lead">Fail-fast contract validation and reliability guarantees.</div>
+
+      <h2>Fail-Fast Philosophy</h2>
+      <p><code>@keshavsoft/api-tree</code> strictly enforces contract integrity before building any runtime objects. If any input is malformed, it throws a descriptive <code>TypeError</code> immediately so errors never leak into runtime invocations.</p>
+
+      <h2>Validation Rules</h2>
+
+      <h3>1. Source Object</h3>
+      <ul>
+        <li>Must be a non-null plain JavaScript object.</li>
+        <li>Arrays, primitives, and null throw: <code>TypeError: source must be a JSON object.</code></li>
+      </ul>
+
+      <h3>2. API Paths Array</h3>
+      <ul>
+        <li>Must be a JavaScript Array. Non-arrays throw: <code>TypeError: apiPaths must be an array of strings.</code></li>
+        <li>Every element must be a string. Non-string elements throw: <code>TypeError: apiPaths must be an array of strings. apiPaths[i] must be a string.</code></li>
+        <li>Empty strings throw: <code>TypeError: apiPaths[i] must not be an empty string.</code></li>
+        <li>Paths with empty segments (such as <code>"users..fetch"</code> or <code>"users."</code>) throw: <code>TypeError: apiPaths[i] contains an invalid empty path segment.</code></li>
+      </ul>
+
+      <h3>3. Executor Function</h3>
+      <ul>
+        <li>Must be a callable function. Non-functions throw: <code>TypeError: executor must be a function.</code></li>
+      </ul>
+
+      <h3>4. Options</h3>
+      <ul>
+        <li>If provided, options must be a plain object. Passing non-objects throws: <code>TypeError: options must be an object if provided.</code></li>
+      </ul>
+
+      <h2>Test Suite Verification</h2>
+      <p>The package is verified using Node's native test runner with 100% passing tests:</p>
+      <pre><code>npm test
+
+✔ v2: builds a callable API tree with single root unwrapped
+✔ v2: automatically preserves multiple root namespaces
+✔ v2: supports explicit inUnwrapRoot: false option
+✔ v2: supports multi-argument leaves and inPathSegments
+✔ v2: supports hybrid branches (callable node with children)
+✔ v2: rejects empty paths or empty segments
+✔ v2: rejects invalid source, executor, and options
+✔ builds a callable API tree
+✔ supports multi-argument leaves
+✔ supports named-object signature
+✔ rejects a non-object source
+✔ rejects non-array api paths
+✔ rejects non-string api paths
+✔ rejects a non-function executor</code></pre>
+
+      <div class="page-nav">
+        <a href="examples.html">&larr; Examples</a>
+        <a href="index.html">Back to The Story &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

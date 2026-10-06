@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>api-tree — API Reference</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">api-tree</a>
+        <div class="brand-subtitle">v2.0.0 &bull; KeshavSoft</div>
+      </div>
+      <div class="nav-label">Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story</a></li>
+        <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+        <li><a href="api.html" class="nav-link active">API Reference</a></li>
+        <li><a href="examples.html" class="nav-link">Examples</a></li>
+        <li><a href="validation.html" class="nav-link">Guarantees</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/api-tree" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>API Reference</h1>
+      <div class="lead">Complete contract specifications and execution context reference.</div>
+
+      <h2>Function Signatures</h2>
+      <p><code>@keshavsoft/api-tree</code> supports both positional arguments and the named object convention:</p>
+
+      <h3>Positional Call</h3>
+      <pre><code>import apiTree from "@keshavsoft/api-tree";
+
+const api = apiTree(source, apiPaths, executor, options);</code></pre>
+
+      <h3>Named Object Call</h3>
+      <pre><code>import apiTree from "@keshavsoft/api-tree";
+
+const api = apiTree({
+    inSource: source,
+    inApiPaths: apiPaths,
+    inExecutor: executor,
+    inOptions: { inUnwrapRoot: false }
+});</code></pre>
+
+      <h2>Execution Context Reference</h2>
+      <p>Whenever an attached leaf method is called (e.g. <code>app.users.profile.fetch("123", "extra")</code>), your executor receives a single standardized context object:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>inRoutePath</code></td>
+            <td><code>string</code></td>
+            <td>The full dot-notation route path (e.g. <code>"app.users.profile.fetch"</code>).</td>
+          </tr>
+          <tr>
+            <td><code>inParam</code></td>
+            <td><code>any</code></td>
+            <td>The primary argument passed to the leaf method.</td>
+          </tr>
+          <tr>
+            <td><code>inArgs</code></td>
+            <td><code>any[]</code></td>
+            <td>Array containing all subsequent arguments passed after <code>inParam</code>.</td>
+          </tr>
+          <tr>
+            <td><code>inLeafSpec</code></td>
+            <td><code>object | undefined</code></td>
+            <td>The resolved leaf definition object found in <code>source.json</code>.</td>
+          </tr>
+          <tr>
+            <td><code>inSource</code></td>
+            <td><code>object</code></td>
+            <td>The complete raw <code>source</code> schema object.</td>
+          </tr>
+          <tr>
+            <td><code>inPathSegments</code></td>
+            <td><code>string[]</code></td>
+            <td>Array of individual path segments (e.g. <code>["app", "users", "profile", "fetch"]</code>).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Options (<code>inOptions</code>)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>inUnwrapRoot</code></td>
+            <td><code>boolean</code></td>
+            <td><code>true</code></td>
+            <td>When <code>true</code> and all paths share a common root segment, unwraps the root. Set to <code>false</code> to preserve the full root namespace.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="page-nav">
+        <a href="how-it-works.html">&larr; How It Works</a>
+        <a href="examples.html">Next: Examples &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
