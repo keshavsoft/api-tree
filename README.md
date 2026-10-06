@@ -1,52 +1,56 @@
-# @keshavsoft/api-tree
+# api-tree
 
-[![npm version](https://img.shields.io/npm/v/@keshavsoft/api-tree.svg)](https://www.npmjs.com/package/@keshavsoft/api-tree)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Node.js CI](https://img.shields.io/badge/node-%3E%3D20.10-brightgreen.svg)]()
-
-> A declarative, ultra-lean routing engine that transforms **Source Schemas**, **API Paths**, and an **Executor** into a callable runtime API tree.
+A small, zero-dependency runtime API-tree builder.
 
 ---
 
-## 💡 The Problem & Philosophy
+## The Story
 
-In modern modular architectures, APIs often end up bloated because **schema contracts**, **route definitions**, and **runtime execution** are tangled together.
+Every domain application already knows two fundamental things: **what data it needs** (its schemas) and **how to get it** (its execution engine).
 
-`@keshavsoft/api-tree` decouples these concerns completely:
+Yet in codebase after codebase, developers end up writing repetitive, brittle boilerplate code just to wire routes together. If you change a method path, you have to create nested object branches by hand, bind handler functions, and manage scope.
 
-$$\mathbf{Runtime\ Tree} = \underbrace{\mathbf{Source\ Schema}}_{\text{JSON Contract}} \;+\; \underbrace{\mathbf{API\ Paths}}_{\text{Dotted Routes}} \;+\; \underbrace{\mathbf{Executor}}_{\text{Execution Flavor}}$$
-
-- **Domain-Agnostic**: Does not know about HTTP, XML, TDL, databases, or specific business logic.
-- **Single Responsibility**: Generates the navigable runtime object tree from contracts and leaves execution to your handler.
-- **Zero Dependencies**: Pure, modern ES module running at native speeds.
+**`api-tree` was created to eliminate that entire layer of boilerplate.**
 
 ```text
-┌─────────────────────────┐     ┌────────────────────────┐     ┌───────────────────────┐
-│       Source JSON       │  +  │       API Paths        │  +  │       Executor        │
-│ (Schema Specifications) │     │ (Dotted Route Strings) │     │ (Custom Handler Func) │
-└───────────┬─────────────┘     └───────────┬────────────┘     └──────────┬────────────┘
-            │                               │                             │
-            └───────────────────────┬───────┴─────────────────────────────┘
-                                    │
-                                    ▼
-                         @keshavsoft/api-tree
-                                    │
-                                    ▼
-                       Callable Runtime API Tree
-                     app.users.profile.fetch("123")
+source JSON + API paths + executor
+                 ↓
+              api-tree
+                 ↓
+       app.users.profile.fetch()
 ```
+
+### The Core Idea
+
+You declare your specifications in JSON. You list the allowable route paths. You provide a single execution function. `@keshavsoft/api-tree` automatically weaves them into a clean, callable dot-notation tree at runtime.
 
 ---
 
-## 📦 Installation
+## Three Pure Responsibilities
 
-```bash
-npm install @keshavsoft/api-tree
-```
+By separating concerns, each component does exactly one job:
+
+1. **`source`** — The domain contract. Contains the definitions, actions, metadata, and schemas.
+2. **`apiPaths`** — The navigation blueprint. A flat array of allowed dotted route paths.
+3. **`executor`** — The muscle. A function that actually carries out the operation (whether talking to an HTTP API, building TDL XML, querying a database, or reading disk).
+
+`@keshavsoft/api-tree` does not know Tally, XML, HTTP, databases, or business rules. It only creates the navigable runtime surface.
 
 ---
 
-## 🚀 Quick Start
+## Why Separate It?
+
+Because the routing engine is completely generic and reusable across different flavors:
+
+- In **`tally-xml-tdl`**, the executor builds raw TDL XML and queries TallyPrime.
+- In **`tally-simple-json`**, the executor cleans and transforms the response into pure JSON.
+- In a **REST or GraphQL client**, the executor dispatches HTTP fetch requests.
+
+None of those tools need to invent their own routing mechanism. They all share the same lean `@keshavsoft/api-tree` engine.
+
+---
+
+## Usage
 
 ```javascript
 import apiTree from "@keshavsoft/api-tree";
@@ -56,7 +60,7 @@ const source = {
     app: {
         users: {
             profile: {
-                fetch: { action: "fetch", resource: "User", timeout: 5000 }
+                fetch: { action: "fetch", resource: "User" }
             }
         }
     }
@@ -68,66 +72,26 @@ const apiPaths = [
 ];
 
 // 3. Executor Function
-const executor = async ({ inRoutePath, inParam, inLeafSpec }) => {
-    console.log(`Executing ${inRoutePath} for ID: ${inParam}`);
-    console.log("Leaf schema definition:", inLeafSpec);
-    return { id: inParam, name: "Alice", action: inLeafSpec.action };
+const executor = async ({ inRoutePath, inLeafSpec, inParam }) => {
+    return {
+        path: inRoutePath,
+        spec: inLeafSpec,
+        id: inParam
+    };
 };
 
 // 4. Build the callable tree
-const api = apiTree(source, apiPaths, executor);
+const app = apiTree(source, apiPaths, executor);
 
 // 5. Call your generated tree!
-const user = await api.users.profile.fetch("123");
-console.log(user);
-// => { id: "123", name: "Alice", action: "fetch" }
+const result = await app.users.profile.fetch("123");
 ```
 
 ---
 
-## ⚡ Key Features (v2)
+## Execution Context
 
-### 1. Pre-Resolved Leaf Specification (`inLeafSpec`)
-Your executor automatically receives the pre-resolved definition object directly from `source.json` under `inLeafSpec`. No need to write repetitive nested property access code!
-
-### 2. Intelligent Root Handling
-- **Single-Root Unwrapping**: When all paths share a common root namespace (e.g., `app.users.list`, `app.orders.create`), `api-tree` automatically unwraps the root so you call `api.users.list()` directly.
-- **Multi-Root Preservation**: When paths span multiple top-level domains (e.g., `users.list` and `orders.create`), `api-tree` automatically preserves all top-level roots (`api.users.list()` and `api.orders.create()`).
-- **Explicit Override**: You can pass `{ inUnwrapRoot: false }` to keep the root prefix intact.
-
-### 3. Dual Signature Support
-Supports both **positional** arguments and the **in-local named object** convention:
-
-```javascript
-// Positional
-const api = apiTree(source, apiPaths, executor, options);
-
-// Named Object
-const api = apiTree({
-    inSource: source,
-    inApiPaths: apiPaths,
-    inExecutor: executor,
-    inOptions: { inUnwrapRoot: false }
-});
-```
-
-### 4. Callable Hybrid Branches
-If a path is both a callable node and has child branches (e.g. `api.users` and `api.users.profile`), `api-tree` attaches child branches directly onto the function:
-```javascript
-await api.users();         // Callable root!
-await api.users.profile(); // Child leaf also callable!
-```
-
----
-
-## 📖 Execution Context Reference
-
-Whenever an attached leaf function is invoked:
-```javascript
-await api.users.profile.fetch("param1", "extraArg1", "extraArg2");
-```
-
-Your `executor` receives a single, standardized context object:
+When an attached leaf function is invoked, your `executor` receives a single, standardized context object:
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
@@ -140,61 +104,18 @@ Your `executor` receives a single, standardized context object:
 
 ---
 
-## 🛡️ Input Validation & Error Handling
+## Validation & Guarantees
 
 `@keshavsoft/api-tree` performs strict pre-flight validation to catch contract misconfigurations early:
 
-- **`source`**: Must be a non-null plain JSON object (throws `TypeError: source must be a JSON object.`).
-- **`apiPaths`**: Must be an array of non-empty strings without empty segments (e.g., `"users..fetch"` or `"users."` throws `TypeError`).
-- **`executor`**: Must be a valid callable function (throws `TypeError: executor must be a function.`).
+- **`source`**: Must be a non-null plain JSON object.
+- **`apiPaths`**: Must be an array of non-empty strings with valid segments.
+- **`executor`**: Must be a valid callable function.
+
+Invalid input produces a clear `TypeError` before the tree is built.
 
 ---
 
-## 🌍 Real-World Architecture Examples
-
-### Example A: Decoupling TallyPrime Runtimes
-```javascript
-import apiTree from "@keshavsoft/api-tree";
-import { source, apiPaths } from "tally-spec";
-import tallyXmlExecutor from "./tallyXmlExecutor.js";
-
-// Generates app.masters.unit.all(), app.company.fetch(), etc.
-const tally = apiTree(source, apiPaths, tallyXmlExecutor);
-const units = await tally.masters.unit.all();
-```
-
-### Example B: Dynamic HTTP / REST Client
-```javascript
-import apiTree from "@keshavsoft/api-tree";
-
-const endpoints = {
-    api: {
-        v1: {
-            users: { get: { method: "GET", url: "/api/v1/users" } }
-        }
-    }
-};
-
-const client = apiTree(endpoints, ["api.v1.users.get"], async ({ inLeafSpec, inParam }) => {
-    const res = await fetch(`${inLeafSpec.url}/${inParam}`, { method: inLeafSpec.method });
-    return res.json();
-});
-
-const user = await client.v1.users.get(42);
-```
-
----
-
-## 🧪 Testing
-
-The package includes a comprehensive test suite using Node's native test runner:
-
-```bash
-npm test
-```
-
----
-
-## 📄 License
+## License
 
 MIT © [KeshavSoft](https://github.com/keshavsoft)
