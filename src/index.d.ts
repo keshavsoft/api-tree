@@ -1,7 +1,7 @@
 /**
  * Context passed to the executor function when a leaf method is invoked.
  */
-export interface ApiTreeExecutionContext<TSource = Record<string, any>, TLeafSpec = any> {
+export interface ApiTreeExecutionContext<TSource = Record<string, any>> {
     /** The full dot-notation path of the invoked leaf (e.g. "app.users.profile.fetch") */
     inRoutePath: string;
     /** The first argument passed to the leaf method */
@@ -10,10 +10,6 @@ export interface ApiTreeExecutionContext<TSource = Record<string, any>, TLeafSpe
     inArgs: any[];
     /** The complete source JSON object */
     inSource: TSource;
-    /** The resolved leaf specification object from source.json, if found */
-    inLeafSpec?: TLeafSpec;
-    /** The segments of the route path split by "." */
-    inPathSegments: string[];
 }
 
 /**

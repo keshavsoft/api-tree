@@ -9,10 +9,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const blueprintSource = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "../src/v4/blueprint/source.json"), "utf8")
+    fs.readFileSync(path.join(__dirname, "../src/v5/blueprint/source.json"), "utf8")
 );
 const blueprintApi = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "../src/v4/blueprint/api.json"), "utf8")
+    fs.readFileSync(path.join(__dirname, "../src/v5/blueprint/api.json"), "utf8")
 );
 
 test("blueprint: builds the complete KeshavSoft ecosystem tree", () => {

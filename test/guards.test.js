@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import guards from "../src/v4/internal-working/guards/index.js";
-import isObject from "../src/v4/internal-working/guards/isObject.js";
-import isStringArray from "../src/v4/internal-working/guards/isStringArray.js";
-import isFunction from "../src/v4/internal-working/guards/isFunction.js";
+import guards from "../src/v5/engine/guards/index.js";
+import isObject from "../src/v5/engine/guards/isObject.js";
+import isStringArray from "../src/v5/engine/guards/isStringArray.js";
+import isFunction from "../src/v5/engine/guards/isFunction.js";
 
 test("guards: isObject accepts valid plain objects", () => {
     assert.doesNotThrow(() => isObject({ inSource: {} }));
