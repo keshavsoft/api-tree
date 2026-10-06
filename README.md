@@ -1,8 +1,8 @@
-# api-tree
+# @keshavsoft/api-tree
 
 A small runtime API-tree builder.
 
-`api-tree` does one job: it takes **source JSON**, **API paths**, and an **executor**, then returns a callable runtime tree.
+`@keshavsoft/api-tree` does one job: it takes **source JSON**, **API paths**, and an **executor**, then returns a callable runtime tree.
 
 ```text
 source JSON
@@ -19,7 +19,7 @@ callable API
 ## Usage
 
 ```js
-import apiTree from "api-tree";
+import apiTree from "@keshavsoft/api-tree";
 
 const source = {
     app: {
@@ -56,7 +56,7 @@ const result = await api.users.profile.fetch("123");
 2. **apiPaths** — a flat array of API paths such as `app.users.profile.fetch`.
 3. **executor** — the function that decides what the selected operation actually does.
 
-`api-tree` does not know Tally, XML, HTTP, databases, or business rules.
+`@keshavsoft/api-tree` does not know Tally, XML, HTTP, databases, or business rules.
 
 ## Validation
 
@@ -84,10 +84,10 @@ Domain repository
              │
              │ source + paths + executor
              ▼
-         api-tree
+        @keshavsoft/api-tree
              │
              ▼
       callable runtime API
 ```
 
-The domain repository owns the meaning and execution. `api-tree` only creates the navigable runtime surface.
+The domain repository owns the meaning and execution. `@keshavsoft/api-tree` only creates the navigable runtime surface.

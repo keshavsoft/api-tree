@@ -1,5 +1,5 @@
 {
-  "name": "api-tree",
+  "name": "@keshavsoft/api-tree",
   "version": "1.0.0",
   "description": "Build a callable runtime API tree from API paths, source JSON, and an external executor.",
   "type": "module",
