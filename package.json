@@ -1,6 +1,6 @@
 {
   "name": "@keshavsoft/api-tree",
-  "version": "3.0.0",
+  "version": "6.1.0",
   "description": "Build a callable runtime API tree from API paths, source JSON, and an external executor.",
   "type": "module",
   "exports": {
@@ -42,6 +42,7 @@
     "node": ">=20.10"
   },
   "devDependencies": {
-    "fast-xml-parser": "^5.11.2"
+    "fast-xml-parser": "^5.11.2",
+    "tally-spec": "^1.0.0"
   }
 }
