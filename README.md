@@ -4,49 +4,48 @@ A small, zero-dependency runtime API-tree builder.
 
 ---
 
-## The Story
+## 💡 When Should You Use This?
 
-Every domain application already knows two fundamental things: **what data it needs** (its schemas) and **how to get it** (its execution engine).
+`@keshavsoft/api-tree` is built specifically for systems where **most of the execution logic is identical** and handled by a **single core function**, while only a few parameters vary from endpoint to endpoint.
 
-Yet in codebase after codebase, developers end up writing repetitive, brittle boilerplate code just to wire routes together. If you change a method path, you have to create nested object branches by hand, bind handler functions, and manage scope.
+### The Problem It Solves
 
-**`api-tree` was created to eliminate that entire layer of boilerplate.**
+Consider an SDK or API client with 20, 50, or 200 endpoints. In most codebases, **95% of the work is identical across all of them**:
+- Sending an HTTP POST or XML payload
+- Setting headers and managing network timeouts
+- Parsing envelopes and extracting data
 
-```text
-source JSON + API paths + executor
-                 ↓
-              api-tree
-                 ↓
-       app.users.profile.fetch()
+The only thing that actually changes between `app.masters.unit.all()` and `app.company.fetch()` are a few variables: a resource name, a TDL query string, or a URL parameter.
+
+Yet without `api-tree`, developers write dozens or hundreds of repetitive, hand-crafted wrapper functions just to call the exact same underlying function with different arguments:
+
+```javascript
+// ❌ The Anti-Pattern: 100 repetitive functions doing the exact same thing
+export const getUnits = () => dispatchTally("<TYPE>Unit</TYPE>...");
+export const getLedgers = () => dispatchTally("<TYPE>Ledger</TYPE>...");
+export const getCompany = () => dispatchTally("<TYPE>Company</TYPE>...");
 ```
 
-### The Core Idea
-
-You declare your specifications in JSON. You list the allowable route paths. You provide a single execution function. `@keshavsoft/api-tree` automatically weaves them into a clean, callable dot-notation tree at runtime.
-
 ---
 
-## Three Pure Responsibilities
+## 🚀 The api-tree Pattern: 1 Engine + Variable JSON
 
-By separating concerns, each component does exactly one job:
+Instead of writing endless boilerplate wrappers, you separate concerns into three clean parts:
 
-1. **`source`** — The domain contract. Contains the definitions, actions, metadata, and schemas.
-2. **`apiPaths`** — The navigation blueprint. A flat array of allowed dotted route paths.
-3. **`executor`** — The muscle. A function that actually carries out the operation (whether talking to an HTTP API, building TDL XML, querying a database, or reading disk).
+1. **One Single Executor**: You write your execution muscle exactly once. It knows how to send the request and handle responses.
+2. **Variable Data in JSON (`source.json`)**: You define only the things that change (TDL queries, actions, resources, URLs) in a declarative schema.
+3. **The Navigation List (`api.json`)**: You list the allowed routes in a flat, readable array.
 
-`@keshavsoft/api-tree` does not know Tally, XML, HTTP, databases, or business rules. It only creates the navigable runtime surface.
+```text
+source JSON (Variables)  +  API paths (Routes)  +  executor (Single Function)
+                                ↓
+                             api-tree
+                                ↓
+                      Callable Runtime Tree
+                    app.masters.unit.all()
+```
 
----
-
-## Why Separate It?
-
-Because the routing engine is completely generic and reusable across different flavors:
-
-- In **`tally-xml-tdl`**, the executor builds raw TDL XML and queries TallyPrime.
-- In **`tally-simple-json`**, the executor cleans and transforms the response into pure JSON.
-- In a **REST or GraphQL client**, the executor dispatches HTTP fetch requests.
-
-None of those tools need to invent their own routing mechanism. They all share the same lean `@keshavsoft/api-tree` engine.
+When a new endpoint is needed, you don't write new JavaScript wrapper functions, manage imports, or test routing logic. **You simply add one entry to your JSON file.** `@keshavsoft/api-tree` binds your single executor to that new definition and instantly exposes it on the callable tree.
 
 ---
 
@@ -55,7 +54,7 @@ None of those tools need to invent their own routing mechanism. They all share t
 ```javascript
 import apiTree from "@keshavsoft/api-tree";
 
-// 1. Source JSON (the schema/metadata contract)
+// 1. Source JSON (the variable parameters)
 const source = {
     app: {
         users: {
@@ -71,7 +70,7 @@ const apiPaths = [
     "app.users.profile.fetch"
 ];
 
-// 3. Executor Function
+// 3. The Single Executor Function (handles 100% of execution)
 const executor = async ({ inRoutePath, inLeafSpec, inParam }) => {
     return {
         path: inRoutePath,
@@ -111,8 +110,6 @@ When an attached leaf function is invoked, your `executor` receives a single, st
 - **`source`**: Must be a non-null plain JSON object.
 - **`apiPaths`**: Must be an array of non-empty strings with valid segments.
 - **`executor`**: Must be a valid callable function.
-
-Invalid input produces a clear `TypeError` before the tree is built.
 
 ---
 
