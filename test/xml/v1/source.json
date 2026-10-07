@@ -1,0 +1,157 @@
+{
+  "tally": {
+    "company": {
+      "fetch": {
+        "action": "fetch",
+        "resource": "Company",
+        "tdl": "<TYPE>Company</TYPE><FETCH>$$Alias:Name</FETCH>",
+        "description": "Fetches company list from Tally."
+      }
+    },
+    "vouchers": {
+      "purchases": {
+        "fetch": {
+          "action": "fetch",
+          "resource": "Purchases",
+          "tdl": "<TYPE>Vouchers:VoucherType</TYPE><CHILDOF>$$$$VchTypePurchase</CHILDOF><BELONGSTO>Yes</BELONGSTO><FETCH>Date, VoucherNumber, VoucherTypeName, PartyLedgerName, Amount, AllInventoryEntries, AllLedgerEntries</FETCH>",
+          "description": "Fetches purchase vouchers."
+        }
+      },
+      "sales": {
+        "fetch": {
+          "action": "fetch",
+          "resource": "Sales",
+          "tdl": "<TYPE>Vouchers:VoucherType</TYPE><CHILDOF>$$$$VchTypeSales</CHILDOF><BELONGSTO>Yes</BELONGSTO><FETCH>Date, VoucherNumber, VoucherTypeName, PartyLedgerName, Amount, AllInventoryEntries, AllLedgerEntries</FETCH>",
+          "description": "Fetches sales vouchers."
+        }
+      }
+    },
+    "masters": {
+      "unit": {
+        "all": {
+          "action": "fetch",
+          "resource": "Unit",
+          "tdl": "<TYPE>Unit</TYPE><FETCH>$$Alias:Name</FETCH>",
+          "description": "Fetches all units."
+        }
+      },
+      "units": {
+        "fetch": {
+          "action": "fetch",
+          "resource": "Unit",
+          "tdl": "<TYPE>Unit</TYPE><FETCH>$$Alias:Name</FETCH>",
+          "description": "Fetches units master from Tally."
+        },
+        "all": {
+          "action": "fetch",
+          "resource": "Unit",
+          "tdl": "<TYPE>Unit</TYPE><FETCH>$$Alias:Name</FETCH>",
+          "description": "Fetches all units."
+        }
+      },
+      "stockItem": {
+        "all": {
+          "action": "fetch",
+          "resource": "StockItem",
+          "tdl": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH>",
+          "description": "Fetches all stock items."
+        },
+        "withBaseUnits": {
+          "action": "fetch",
+          "resource": "StockItem",
+          "tdl": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>BaseUnits</FETCH>",
+          "description": "Fetches stock items with base units."
+        },
+        "withBatches": {
+          "action": "fetch",
+          "resource": "StockItem",
+          "tdl": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>BaseUnits</FETCH><FETCH>BatchAllocations.*</FETCH>",
+          "description": "Fetches stock items with batches."
+        }
+      },
+      "stockItems": {
+        "withBatches": {
+          "action": "fetch",
+          "resource": "StockItem",
+          "tdl": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>BaseUnits</FETCH><FETCH>BatchAllocations.*</FETCH>",
+          "description": "Fetches stock items with batch allocations from Tally."
+        }
+      },
+      "ledger": {
+        "all": {
+          "action": "fetch",
+          "resource": "Ledger",
+          "tdl": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH>",
+          "description": "Fetches all ledgers."
+        },
+        "withDetails": {
+          "action": "fetch",
+          "resource": "Ledger",
+          "tdl": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>GSTRegistrationType</FETCH><FETCH>GSTIN</FETCH>",
+          "description": "Fetches ledgers with GSTIN details."
+        },
+        "withGstDetails": {
+          "action": "fetch",
+          "resource": "Ledger",
+          "tdl": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>LEDGSTREGDETAILS.LIST</FETCH>",
+          "description": "Fetches ledgers with full GST registration details."
+        }
+      },
+      "ledgers": {
+        "withGstDetails": {
+          "action": "fetch",
+          "resource": "Ledger",
+          "tdl": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>LEDGSTREGDETAILS.LIST</FETCH>",
+          "description": "Fetches ledgers with GST registration details from Tally."
+        }
+      },
+      "stockGroup": {
+        "all": {
+          "action": "fetch",
+          "resource": "StockGroup",
+          "tdl": "<TYPE>StockGroup</TYPE><FETCH>$$Alias:Name</FETCH>",
+          "description": "Fetches all stock groups."
+        },
+        "withParent": {
+          "action": "fetch",
+          "resource": "StockGroup",
+          "tdl": "<TYPE>StockGroup</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>Parent</FETCH>",
+          "description": "Fetches stock groups with parent hierarchies."
+        }
+      },
+      "stockGroups": {
+        "withParent": {
+          "action": "fetch",
+          "resource": "StockGroup",
+          "tdl": "<TYPE>StockGroup</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>Parent</FETCH>",
+          "description": "Fetches stock groups with parent details from Tally."
+        }
+      },
+      "godown": {
+        "all": {
+          "action": "fetch",
+          "resource": "Godown",
+          "tdl": "<TYPE>Godown</TYPE><FETCH>$$Alias:Name</FETCH>",
+          "description": "Fetches all godowns."
+        },
+        "withParent": {
+          "action": "fetch",
+          "resource": "Godown",
+          "tdl": "<TYPE>Godown</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>Parent</FETCH>",
+          "description": "Fetches godowns with parent hierarchies."
+        }
+      }
+    },
+    "reports": {
+      "stockSummary": {
+        "fetch": {
+          "action": "fetch",
+          "resource": "StockSummary",
+          "reportId": "Stock Summary",
+          "staticVariables": "<EXPLODEFLAG>Yes</EXPLODEFLAG>",
+          "description": "Fetches the Stock Summary report from Tally."
+        }
+      }
+    }
+  }
+}

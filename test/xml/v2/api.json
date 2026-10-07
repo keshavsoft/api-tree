@@ -1,0 +1,92 @@
+{
+  "transform": {
+    "tally": {
+      "transform": {
+        "company": {
+          "transform": {
+            "fetch": {}
+          }
+        },
+        "vouchers": {
+          "transform": {
+            "purchases": {
+              "transform": {
+                "fetch": {}
+              }
+            },
+            "sales": {
+              "transform": {
+                "fetch": {}
+              }
+            }
+          }
+        },
+        "masters": {
+          "transform": {
+            "unit": {
+              "transform": {
+                "all": {}
+              }
+            },
+            "units": {
+              "transform": {
+                "fetch": {},
+                "all": {}
+              }
+            },
+            "stockItem": {
+              "transform": {
+                "all": {},
+                "withBaseUnits": {},
+                "withBatches": {}
+              }
+            },
+            "stockItems": {
+              "transform": {
+                "withBatches": {}
+              }
+            },
+            "ledger": {
+              "transform": {
+                "all": {},
+                "withDetails": {},
+                "withGstDetails": {}
+              }
+            },
+            "ledgers": {
+              "transform": {
+                "withGstDetails": {}
+              }
+            },
+            "stockGroup": {
+              "transform": {
+                "all": {},
+                "withParent": {}
+              }
+            },
+            "stockGroups": {
+              "transform": {
+                "withParent": {}
+              }
+            },
+            "godown": {
+              "transform": {
+                "all": {},
+                "withParent": {}
+              }
+            }
+          }
+        },
+        "reports": {
+          "transform": {
+            "stockSummary": {
+              "transform": {
+                "fetch": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

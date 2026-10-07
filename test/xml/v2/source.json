@@ -1,0 +1,12 @@
+{
+  "tally": {
+    "company": {
+      "fetch": {
+        "action": "fetch",
+        "resource": "Company",
+        "tdl": "<TYPE>Company</TYPE><FETCH>$$Alias:Name</FETCH>",
+        "description": "Fetches company list from Tally."
+      }
+    }
+  }
+}
