@@ -64,7 +64,7 @@ test("live tally: queries localhost:9000 and parses with fast-xml-parser", async
         };
     });
 
-    const res = await app.company.fetch();
+    const res = await app.tally.company.fetch();
     assert.equal(res.route, "tally.company.fetch");
     assert.ok(res.parsed, "Response was successfully parsed into JSON by fast-xml-parser");
 });

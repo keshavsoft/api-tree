@@ -46,11 +46,11 @@ test("two-object traversal: accepts (source, transformRecipe, executor) matching
         return { ok: true, data: inLeafSpec.resource };
     });
 
-    assert.equal(typeof app.users.profile.fetch, "function");
-    assert.equal(app.users.settings, undefined);
-    assert.equal(app.billing, undefined);
+    assert.equal(typeof app.app.users.profile.fetch, "function");
+    assert.equal(app.app.users.settings, undefined);
+    assert.equal(app.app.billing, undefined);
 
-    const res = await app.users.profile.fetch("user-101");
+    const res = await app.app.users.profile.fetch("user-101");
     assert.deepEqual(res, { ok: true, data: "UserProfile" });
     assert.equal(captured.inRoutePath, "app.users.profile.fetch");
     assert.equal(captured.inLeafSpec.resource, "UserProfile");

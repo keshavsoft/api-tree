@@ -1,6 +1,9 @@
 import apiTree from "../../../src/index.js";
-import source from "./source.json" with {type: "json"};
-import apiPaths from "./api.json" with {type: "json"};
+
+// import source from "./source.json" with {type: "json"};
+// import apiPaths from "./api.json" with {type: "json"};
+
+import { source, apiPaths } from "tally-spec";
 
 import execute from "./engine/execution/index.js";
 

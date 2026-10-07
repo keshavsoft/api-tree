@@ -20,8 +20,8 @@ test("v3 unit: builds callable tree from positional arguments", async () => {
         param: inParam
     }));
 
-    assert.equal(typeof app.users.profile.fetch, "function");
-    const res = await app.users.profile.fetch("user-42");
+    assert.equal(typeof app.app.users.profile.fetch, "function");
+    const res = await app.app.users.profile.fetch("user-42");
     assert.deepEqual(res, { route: "app.users.profile.fetch", param: "user-42" });
 });
 
@@ -32,8 +32,8 @@ test("v3 unit: supports named-object signature", async () => {
         inExecutor: async ({ inRoutePath }) => inRoutePath
     });
 
-    assert.equal(typeof app.users.profile.fetch, "function");
-    const res = await app.users.profile.fetch();
+    assert.equal(typeof app.app.users.profile.fetch, "function");
+    const res = await app.app.users.profile.fetch();
     assert.equal(res, "app.users.profile.fetch");
 });
 
@@ -45,7 +45,7 @@ test("v3 unit: passes multiple extra arguments in inArgs array", async () => {
         return "done";
     });
 
-    await app.users.profile.fetch("first", "second", 3, { four: true });
+    await app.app.users.profile.fetch("first", "second", 3, { four: true });
 
     assert.deepEqual(capturedArgs, {
         inParam: "first",

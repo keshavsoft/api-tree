@@ -15,14 +15,14 @@ test("real-world tally: builds the full 20-endpoint tree", () => {
     const app = apiTree(tallySource, tallyApiPaths, mockExecutor);
 
     // 1. Check top-level namespaces
-    assert.equal(typeof app.company.fetch, "function", "app.company.fetch should be a function");
-    assert.equal(typeof app.vouchers.purchases.fetch, "function", "app.vouchers.purchases.fetch should be a function");
-    assert.equal(typeof app.vouchers.sales.fetch, "function", "app.vouchers.sales.fetch should be a function");
-    assert.equal(typeof app.masters.unit.all, "function", "app.masters.unit.all should be a function");
-    assert.equal(typeof app.masters.stockItem.withBatches, "function", "app.masters.stockItem.withBatches should be a function");
-    assert.equal(typeof app.masters.ledger.withGstDetails, "function", "app.masters.ledger.withGstDetails should be a function");
-    assert.equal(typeof app.masters.stockGroup.withParent, "function", "app.masters.stockGroup.withParent should be a function");
-    assert.equal(typeof app.reports.stockSummary.fetch, "function", "app.reports.stockSummary.fetch should be a function");
+    assert.equal(typeof app.tally.company.fetch, "function", "app.tally.company.fetch should be a function");
+    assert.equal(typeof app.tally.vouchers.purchases.fetch, "function", "app.tally.vouchers.purchases.fetch should be a function");
+    assert.equal(typeof app.tally.vouchers.sales.fetch, "function", "app.tally.vouchers.sales.fetch should be a function");
+    assert.equal(typeof app.tally.masters.unit.all, "function", "app.tally.masters.unit.all should be a function");
+    assert.equal(typeof app.tally.masters.stockItem.withBatches, "function", "app.tally.masters.stockItem.withBatches should be a function");
+    assert.equal(typeof app.tally.masters.ledger.withGstDetails, "function", "app.tally.masters.ledger.withGstDetails should be a function");
+    assert.equal(typeof app.tally.masters.stockGroup.withParent, "function", "app.tally.masters.stockGroup.withParent should be a function");
+    assert.equal(typeof app.tally.reports.stockSummary.fetch, "function", "app.tally.reports.stockSummary.fetch should be a function");
 });
 
 test("real-world tally: executes company.fetch and passes correct route info", async () => {
@@ -34,7 +34,7 @@ test("real-world tally: executes company.fetch and passes correct route info", a
     };
 
     const app = apiTree(tallySource, tallyApiPaths, mockExecutor);
-    const result = await app.company.fetch();
+    const result = await app.tally.company.fetch();
 
     assert.deepEqual(result, { companies: ["mani9", "demo"] });
     assert.equal(capturedContext.inRoutePath, "tally.company.fetch");
@@ -51,7 +51,7 @@ test("real-world tally: executes masters.stockItem.withBatches with single param
     };
 
     const app = apiTree(tallySource, tallyApiPaths, mockExecutor);
-    const result = await app.masters.stockItem.withBatches("Item A");
+    const result = await app.tally.masters.stockItem.withBatches("Item A");
 
     assert.equal(capturedContext.inRoutePath, "tally.masters.stockItem.withBatches");
     assert.equal(capturedContext.inParam, "Item A");
@@ -67,7 +67,7 @@ test("real-world tally: executes reports.stockSummary.fetch with multiple parame
     };
 
     const app = apiTree(tallySource, tallyApiPaths, mockExecutor);
-    const result = await app.reports.stockSummary.fetch("2024-04-01", "2025-03-31", { explode: true });
+    const result = await app.tally.reports.stockSummary.fetch("2024-04-01", "2025-03-31", { explode: true });
 
     assert.equal(capturedContext.inRoutePath, "tally.reports.stockSummary.fetch");
     assert.equal(capturedContext.inParam, "2024-04-01");
@@ -86,7 +86,7 @@ test("real-world tally: supports named object signature with full contract", asy
         }
     });
 
-    const res = await app.masters.godown.withParent("Main Location");
+    const res = await app.tally.masters.godown.withParent("Main Location");
     assert.equal(res, "ok");
     assert.equal(capturedPath, "tally.masters.godown.withParent");
 });

@@ -21,9 +21,9 @@ test("builds a callable API tree", async () => {
         spec: inSource.app.users.profile.fetch
     }));
 
-    assert.equal(typeof api.users.profile.fetch, "function");
+    assert.equal(typeof api.app.users.profile.fetch, "function");
 
-    const result = await api.users.profile.fetch("123");
+    const result = await api.app.users.profile.fetch("123");
     assert.deepEqual(result, {
         inRoutePath: "app.users.profile.fetch",
         inParam: "123",
@@ -38,7 +38,7 @@ test("supports multi-argument leaves", async () => {
         inArgs
     }));
 
-    const result = await api.users.profile.fetch("123", "extra1", "extra2");
+    const result = await api.app.users.profile.fetch("123", "extra1", "extra2");
     assert.deepEqual(result, {
         inRoutePath: "app.users.profile.fetch",
         inParam: "123",
@@ -53,8 +53,8 @@ test("supports named-object signature", async () => {
         inExecutor: async ({ inRoutePath, inParam }) => ({ inRoutePath, inParam })
     });
 
-    assert.equal(typeof api.users.profile.fetch, "function");
-    const result = await api.users.profile.fetch("abc");
+    assert.equal(typeof api.app.users.profile.fetch, "function");
+    const result = await api.app.users.profile.fetch("abc");
     assert.deepEqual(result, {
         inRoutePath: "app.users.profile.fetch",
         inParam: "abc"

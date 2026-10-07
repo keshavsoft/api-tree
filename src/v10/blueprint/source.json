@@ -1,0 +1,228 @@
+{
+    "app": {
+        "ecosystem": {
+            "architecture": {
+                "philosophy": {
+                    "fetch": {
+                        "action": "fetch",
+                        "resource": "philosophy",
+                        "description": "Explains why endpoints as structured data eliminates conventional folder sprawl.",
+                        "data": {
+                            "concept": "Endpoints as Data",
+                            "problem": "In conventional client libraries, adding 50 endpoints requires creating 50 directories and 50 repetitive boilerplate files, causing maintenance drag and import fragility.",
+                            "solution": "Define endpoints declaratively in JSON contracts (source.json + api.json) and assemble the callable object tree in memory at startup.",
+                            "benefits": [
+                                "Zero directory sprawl across packages",
+                                "Single point of query customization in engine/execution",
+                                "Instant in-memory object tree generation without code duplication",
+                                "Deterministic compile-time TypeScript typing directly from JSON"
+                            ]
+                        }
+                    }
+                },
+                "layers": {
+                    "fetch": {
+                        "action": "fetch",
+                        "resource": "layers",
+                        "description": "Details the three clean architectural layers of a JSON-driven NPM package.",
+                        "data": {
+                            "layers": [
+                                {
+                                    "name": "1. Public Contract (api.json)",
+                                    "role": "Explicit array of allowed dot-separated paths controlling the public perimeter."
+                                },
+                                {
+                                    "name": "2. Domain Specification (source.json)",
+                                    "role": "Single source of truth for resources, actions, schemas, JSDocs, and mock or real payloads."
+                                },
+                                {
+                                    "name": "3. Engine (engine/)",
+                                    "role": "In-memory route tree assembly (engine/route/) and story-driven execution pipeline (engine/execution/)."
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "tools": {
+                "blueprint": {
+                    "fetch": {
+                        "action": "fetch",
+                        "resource": "blueprint",
+                        "description": "Specification for json-driven-npm: The Architectural Source of Truth.",
+                        "data": {
+                            "package": "json-driven-npm",
+                            "role": "Architectural Source of Truth & Reference Specification",
+                            "repository": "https://github.com/keshavsoft/json-driven-npm",
+                            "npm": "https://www.npmjs.com/package/json-driven-npm",
+                            "responsibilities": [
+                                "Maintains reference versions (v1, v2, v3, v4)",
+                                "Provides the in-memory route mounting engine",
+                                "Provides the narrative execution coordinator",
+                                "Exposes live CLI terminal inspector via npx json-driven-npm"
+                            ],
+                            "rule": "Never transports code itself; acts as the authoritative template source."
+                        }
+                    }
+                },
+                "scaffolder": {
+                    "fetch": {
+                        "action": "fetch",
+                        "resource": "scaffolder",
+                        "description": "Specification for create-json-driven-npm: The Zero-Dependency Code Transporter.",
+                        "data": {
+                            "package": "create-json-driven-npm",
+                            "role": "The Scaffolder & Code Transporter",
+                            "repository": "https://github.com/keshavsoft/create-json-driven-npm",
+                            "npm": "https://www.npmjs.com/package/create-json-driven-npm",
+                            "usage": "npm create json-driven-npm [target-directory] or npx create-json-driven-npm [target-directory]",
+                            "mechanism": "Dynamically inspects node_modules/json-driven-npm/src, resolves the highest active version, and transports the clean skeleton into the target directory.",
+                            "features": [
+                                "Zero hardcoded templates (reads from json-driven-npm)",
+                                "Built-in safety guards preventing overwrites",
+                                "Instant scaffolding in 1 second"
+                            ]
+                        }
+                    }
+                },
+                "intellisense": {
+                    "fetch": {
+                        "action": "fetch",
+                        "resource": "intellisense",
+                        "description": "Specification for create-intellisense: The Automated TypeScript Generator.",
+                        "data": {
+                            "package": "create-intellisense",
+                            "role": "Zero-Dependency TypeScript Type & JSDoc Generator",
+                            "repository": "https://github.com/keshavsoft/create-intellisense",
+                            "npm": "https://www.npmjs.com/package/create-intellisense",
+                            "usage": "npx create-intellisense",
+                            "mechanism": "Scans api.json and source.json in the project root or active version folder and emits index.d.ts with full IDE autocomplete and hover tooltips.",
+                            "features": [
+                                "Zero external dependencies (pure Node.js builtins)",
+                                "Flexible path discovery (supports flattened and nested layouts)",
+                                "Auto-infers types from package.json and active exports"
+                            ]
+                        }
+                    }
+                }
+            },
+            "workflow": {
+                "steps": {
+                    "fetch": {
+                        "action": "fetch",
+                        "resource": "workflow",
+                        "description": "The 3-step development guide for creating a new JSON-driven NPM package.",
+                        "data": {
+                            "steps": [
+                                {
+                                    "step": 1,
+                                    "name": "Scaffold",
+                                    "command": "npm create json-driven-npm ./my-api-client",
+                                    "description": "create-json-driven-npm transports the clean v4 skeleton into your project directory with zero dependencies."
+                                },
+                                {
+                                    "step": 2,
+                                    "name": "Customize",
+                                    "command": "Edit api.json & source.json",
+                                    "description": "Define your public routes in api.json and endpoint metadata in source.json. Implement your custom query/fetch logic in engine/execution/index.js."
+                                },
+                                {
+                                    "step": 3,
+                                    "name": "Generate Types",
+                                    "command": "npx create-intellisense",
+                                    "description": "create-intellisense scans your JSON contracts and emits index.d.ts, giving your users instant autocomplete and type safety."
+                                }
+                            ]
+                        }
+                    }
+                },
+                "principles": {
+                    "fetch": {
+                        "action": "fetch",
+                        "resource": "principles",
+                        "description": "Core KeshavSoft engineering standards and design conventions.",
+                        "data": {
+                            "standards": [
+                                {
+                                    "rule": "Strictly One Default Export",
+                                    "syntax": "export default startFunc;",
+                                    "rationale": "Eliminates named export clutter and namespace ambiguity."
+                                },
+                                {
+                                    "rule": "Standardized Parameter Unwrapping",
+                                    "syntax": "const startFunc = ({ inParam }) => { const localParam = inParam; ... };",
+                                    "rationale": "Prevents mutation of input objects and makes parameter origins explicit."
+                                },
+                                {
+                                    "rule": "Pure Domain Decoupling",
+                                    "syntax": "source.json contains business metadata only",
+                                    "rationale": "Keeps domain specifications independent from network protocols, headers, or runtime environments."
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "founder": {
+            "profile": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "profile",
+                    "description": "Fetches founder and software architect profile.",
+                    "data": {
+                        "name": "Keshav Nalam",
+                        "role": "Software Architect & Developer",
+                        "company": "KeshavSoft",
+                        "location": "India",
+                        "bio": "Creator of zero-dependency, declarative, JSON-driven NPM architectures."
+                    }
+                }
+            },
+            "links": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "links",
+                    "description": "Fetches official website, GitHub, NPM, and LinkedIn profile links.",
+                    "data": {
+                        "website": "https://keshavsoft.com/",
+                        "github": "https://github.com/keshavsoft",
+                        "npm": "https://www.npmjs.com/~keshavsoft",
+                        "linkedin": "https://www.linkedin.com/in/keshav-nalam"
+                    }
+                }
+            }
+        },
+        "company": {
+            "info": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "info",
+                    "description": "Fetches KeshavSoft organization information and engineering philosophy.",
+                    "data": {
+                        "name": "KeshavSoft",
+                        "tagline": "Pure, declarative, and config-driven software engineering",
+                        "website": "https://keshavsoft.com/",
+                        "philosophy": "Zero-dependency architectures, declarative pipelines, and zero folder sprawl"
+                    }
+                }
+            },
+            "packages": {
+                "fetch": {
+                    "action": "fetch",
+                    "resource": "packages",
+                    "description": "Lists flagship packages in the KeshavSoft ecosystem.",
+                    "data": [
+                        { "name": "tally-simple", "description": "Raw TDL transport client & CLI for Tally ERP/Prime" },
+                        { "name": "tally-simple-json", "description": "Fast XML-to-JSON parsing client for Tally" },
+                        { "name": "create-intellisense", "description": "Zero-dependency TypeScript declaration generator for JSON-driven architectures" },
+                        { "name": "create-json-driven-npm", "description": "Official scaffolding tool to transport JSON-driven client architectures" },
+                        { "name": "json-renderers", "description": "Browser DOM mounting runtime for declarative UI specifications" },
+                        { "name": "json-renderers-build", "description": "Headless UI component specification compiler" },
+                        { "name": "json-driven-npm", "description": "Architectural reference implementation and CLI runner for declarative, JSON-driven NPM packages" }
+                    ]
+                }
+            }
+        }
+    }
+}

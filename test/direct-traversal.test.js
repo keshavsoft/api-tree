@@ -12,12 +12,12 @@ test("direct traversal: builds callable tree with only (source, executor) withou
         };
     });
 
-    assert.equal(typeof app.company.fetch, "function");
-    assert.equal(typeof app.masters.unit.all, "function");
-    assert.equal(typeof app.masters.ledger.all, "function");
-    assert.equal(typeof app.vouchers.purchases.fetch, "function");
+    assert.equal(typeof app.tally.company.fetch, "function");
+    assert.equal(typeof app.tally.masters.unit.all, "function");
+    assert.equal(typeof app.tally.masters.ledger.all, "function");
+    assert.equal(typeof app.tally.vouchers.purchases.fetch, "function");
 
-    const res = await app.masters.unit.all("mani9");
+    const res = await app.tally.masters.unit.all("mani9");
     assert.equal(res.route, "tally.masters.unit.all");
     assert.equal(res.param, "mani9");
     assert.equal(res.spec.resource, "Unit");

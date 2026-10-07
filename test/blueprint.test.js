@@ -20,17 +20,17 @@ test("blueprint: builds the complete KeshavSoft ecosystem tree", () => {
         return { executedRoute: inRoutePath };
     });
 
-    assert.equal(typeof app.ecosystem.architecture.philosophy.fetch, "function");
-    assert.equal(typeof app.ecosystem.architecture.layers.fetch, "function");
-    assert.equal(typeof app.ecosystem.tools.blueprint.fetch, "function");
-    assert.equal(typeof app.ecosystem.tools.scaffolder.fetch, "function");
-    assert.equal(typeof app.ecosystem.tools.intellisense.fetch, "function");
-    assert.equal(typeof app.ecosystem.workflow.steps.fetch, "function");
-    assert.equal(typeof app.ecosystem.workflow.principles.fetch, "function");
-    assert.equal(typeof app.founder.profile.fetch, "function");
-    assert.equal(typeof app.founder.links.fetch, "function");
-    assert.equal(typeof app.company.info.fetch, "function");
-    assert.equal(typeof app.company.packages.fetch, "function");
+    assert.equal(typeof app.app.ecosystem.architecture.philosophy.fetch, "function");
+    assert.equal(typeof app.app.ecosystem.architecture.layers.fetch, "function");
+    assert.equal(typeof app.app.ecosystem.tools.blueprint.fetch, "function");
+    assert.equal(typeof app.app.ecosystem.tools.scaffolder.fetch, "function");
+    assert.equal(typeof app.app.ecosystem.tools.intellisense.fetch, "function");
+    assert.equal(typeof app.app.ecosystem.workflow.steps.fetch, "function");
+    assert.equal(typeof app.app.ecosystem.workflow.principles.fetch, "function");
+    assert.equal(typeof app.app.founder.profile.fetch, "function");
+    assert.equal(typeof app.app.founder.links.fetch, "function");
+    assert.equal(typeof app.app.company.info.fetch, "function");
+    assert.equal(typeof app.app.company.packages.fetch, "function");
 });
 
 test("blueprint: executor returns data from source domain specification", async () => {
@@ -43,9 +43,9 @@ test("blueprint: executor returns data from source domain specification", async 
         return node?.data || null;
     });
 
-    const philosophy = await app.ecosystem.architecture.philosophy.fetch();
+    const philosophy = await app.app.ecosystem.architecture.philosophy.fetch();
     assert.equal(philosophy.concept, "Endpoints as Data");
 
-    const founder = await app.founder.profile.fetch();
+    const founder = await app.app.founder.profile.fetch();
     assert.equal(founder.name, "Keshav Nalam");
 });
