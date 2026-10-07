@@ -1,0 +1,13 @@
+[
+  "app.ecosystem.architecture.philosophy.fetch",
+  "app.ecosystem.architecture.layers.fetch",
+  "app.ecosystem.tools.blueprint.fetch",
+  "app.ecosystem.tools.scaffolder.fetch",
+  "app.ecosystem.tools.intellisense.fetch",
+  "app.ecosystem.workflow.steps.fetch",
+  "app.ecosystem.workflow.principles.fetch",
+  "app.founder.profile.fetch",
+  "app.founder.links.fetch",
+  "app.company.info.fetch",
+  "app.company.packages.fetch"
+]
