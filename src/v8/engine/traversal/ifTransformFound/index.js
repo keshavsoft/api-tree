@@ -1,4 +1,5 @@
-import traverse from "../traverse.js";
+import traverse from "../index.js";
+import createCallable from "../../caller/index.js";
 
 const startFunc = ({ inSource, inTransform, inExecutor, inPath, inRootSource }) => {
     const localSource = inSource;
@@ -27,18 +28,12 @@ const startFunc = ({ inSource, inTransform, inExecutor, inPath, inRootSource }) 
                 inRootSource: localRootSource
             });
         } else {
-            newElement[newKey] = async (param, ...args) => {
-                const localParam = param;
-                const localArgs = args;
-
-                return await localExecutor({
-                    inRoutePath: currentPath.join("."),
-                    inLeafSpec: value,
-                    inParam: localParam,
-                    inArgs: localArgs,
-                    inSource: localRootSource
-                });
-            };
+            newElement[newKey] = createCallable({
+                inRoutePath: currentPath.join("."),
+                inLeafSpec: value,
+                inExecutor: localExecutor,
+                inSource: localRootSource
+            });
         }
     }
 

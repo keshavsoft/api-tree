@@ -10,4 +10,4 @@ console.log("app: ", app);
 
 const data = await app.company.fetch();
 
-console.log("data : ", data);
+console.log("data : ", data?.ENVELOPE?.BODY?.DATA?.COLLECTION);
